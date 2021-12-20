@@ -1,0 +1,66 @@
+Arguments: 
+  /usr/local/bin/node /usr/local/bin/yarn install
+
+PATH: 
+  /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Apple/usr/bin:/Users/sunhangleang/.cargo/bin:/usr/local/share/flutter/bin:/usr/local/share/flutter/bin
+
+Yarn version: 
+  1.22.10
+
+Node version: 
+  14.17.4
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: read ECONNRESET
+      at TLSWrap.onStreamRead (internal/stream_base_commons.js:209:20)
+
+npm manifest: 
+  {
+    "name": "wrapped-sel",
+    "version": "1.0.0",
+    "description": "Wrapped Selendra Token",
+    "main": "index.ts",
+    "scripts": {
+      "test": "npx hardhat test"
+    },
+    "keywords": [
+      "wrapped-token",
+      "selendra"
+    ],
+    "author": "",
+    "license": "GPL-3.0",
+    "devDependencies": {
+      "@nomiclabs/hardhat-ethers": "^2.0.2",
+      "@nomiclabs/hardhat-waffle": "^2.0.1",
+      "@openzeppelin/contracts": "^3.4.1-solc-0.7",
+      "@types/chai": "^4.2.21",
+      "@types/mocha": "^9.0.0",
+      "@types/node": "^16.6.2",
+      "chai": "^4.3.4",
+      "dotenv": "^10.0.0",
+      "ethereum-waffle": "^3.4.0",
+      "ethers": "^5.4.4",
+      "hardhat": "^2.6.0",
+      "hardhat-abi-exporter": "^2.2.1",
+      "hardhat-contract-sizer": "^2.0.3",
+      "hardhat-deploy": "^0.8.11",
+      "hardhat-deploy-ethers": "^0.3.0-beta.10",
+      "hardhat-gas-reporter": "^1.0.4",
+      "hardhat-spdx-license-identifier": "^2.0.3",
+      "hardhat-typechain": "^0.3.5",
+      "hardhat-watcher": "^2.1.1",
+      "solidity-coverage": "^0.7.16",
+      "ts-node": "^10.2.1",
+      "typechain-target-ethers-v5": "^5.0.1",
+      "typescript": "^4.3.5"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

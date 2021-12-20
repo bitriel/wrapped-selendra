@@ -116,13 +116,11 @@ const config: HardhatUserConfig = {
       gasMultiplier: 2,
     },
     "selendra-testnet": {
-      url: "https://rpc.testnet.selendra.org",
+      url: "https://apiselendra-testnet.koompi.org/",
       accounts,
-      chainId: 2000,
+      chainId: 222,
       live: true,
-      saveDeployments: true,
-      tags: ["staging"],
-      gasMultiplier: 2,
+      saveDeployments: true
     },
   },
   paths: {
@@ -137,7 +135,7 @@ const config: HardhatUserConfig = {
   solidity: {
     compilers: [
       {
-        version: "0.7.6",
+        version: "0.4.18",
         settings: {
           optimizer: {
             enabled: true,

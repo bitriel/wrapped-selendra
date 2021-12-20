@@ -1,66 +1,63 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.7.0;
+pragma solidity ^0.4.18;
 
 contract WSEL {
-	string public name = "Wrapped Selendra";
-	string public symbol = "WSEL";
-	uint8 public decimals = 18;
+    string public name     = "Wrapped SEL";
+    string public symbol   = "WSEL";
+    uint8  public decimals = 18;
 
-	event Approval(address indexed src, address indexed guy, uint256 wad);
-	event Transfer(address indexed src, address indexed dst, uint256 wad);
-	event Deposit(address indexed dst, uint256 wad);
-	event Withdrawal(address indexed src, uint256 wad);
+    event  Approval(address indexed src, address indexed guy, uint wad);
+    event  Transfer(address indexed src, address indexed dst, uint wad);
+    event  Deposit(address indexed dst, uint wad);
+    event  Withdrawal(address indexed src, uint wad);
 
-	mapping(address => uint256) public balanceOf;
-	mapping(address => mapping(address => uint256)) public allowance;
+    mapping (address => uint)                       public  balanceOf;
+    mapping (address => mapping (address => uint))  public  allowance;
 
-	receive() external payable {
-		deposit();
-	}
+    function() public payable {
+        deposit();
+    }
+    function deposit() public payable {
+        balanceOf[msg.sender] += msg.value;
+        Deposit(msg.sender, msg.value);
+    }
+    function withdraw(uint wad) public {
+        require(balanceOf[msg.sender] >= wad);
+        balanceOf[msg.sender] -= wad;
+        msg.sender.transfer(wad);
+        Withdrawal(msg.sender, wad);
+    }
 
-	function deposit() public payable {
-		balanceOf[msg.sender] += msg.value;
-		emit Deposit(msg.sender, msg.value);
-	}
+    function totalSupply() public view returns (uint) {
+        return this.balance;
+    }
 
-	function withdraw(uint256 wad) public {
-		require(balanceOf[msg.sender] >= wad, "WSEL: Error");
-		balanceOf[msg.sender] -= wad;
-		payable(msg.sender).transfer(wad);
-		emit Withdrawal(msg.sender, wad);
-	}
+    function approve(address guy, uint wad) public returns (bool) {
+        allowance[msg.sender][guy] = wad;
+        Approval(msg.sender, guy, wad);
+        return true;
+    }
 
-	function totalSupply() public view returns (uint256) {
-		return address(this).balance;
-	}
+    function transfer(address dst, uint wad) public returns (bool) {
+        return transferFrom(msg.sender, dst, wad);
+    }
 
-	function approve(address guy, uint256 wad) public returns (bool) {
-		allowance[msg.sender][guy] = wad;
-		emit Approval(msg.sender, guy, wad);
-		return true;
-	}
+    function transferFrom(address src, address dst, uint wad)
+    public
+    returns (bool)
+    {
+        require(balanceOf[src] >= wad);
 
-	function transfer(address dst, uint256 wad) public returns (bool) {
-		return transferFrom(msg.sender, dst, wad);
-	}
+        if (src != msg.sender && allowance[src][msg.sender] != uint(-1)) {
+            require(allowance[src][msg.sender] >= wad);
+            allowance[src][msg.sender] -= wad;
+        }
 
-	function transferFrom(
-		address src,
-		address dst,
-		uint256 wad
-	) public returns (bool) {
-		require(balanceOf[src] >= wad, "WSEL: Error");
+        balanceOf[src] -= wad;
+        balanceOf[dst] += wad;
 
-		if (src != msg.sender && allowance[src][msg.sender] != type(uint128).max) {
-			require(allowance[src][msg.sender] >= wad, "WSEL: Error");
-			allowance[src][msg.sender] -= wad;
-		}
+        Transfer(src, dst, wad);
 
-		balanceOf[src] -= wad;
-		balanceOf[dst] += wad;
-
-		emit Transfer(src, dst, wad);
-
-		return true;
-	}
+        return true;
+    }
 }
