@@ -5,38 +5,17 @@ import "dotenv/config"
 // plugins
 import "solidity-coverage"
 import "hardhat-contract-sizer";
-import "hardhat-abi-exporter"
 import "hardhat-deploy"
 import "hardhat-deploy-ethers"
-import "hardhat-gas-reporter"
-import "hardhat-spdx-license-identifier"
 import "hardhat-typechain"
 import "hardhat-watcher"
 
-const accounts = {
-  mnemonic: process.env.MNEMONIC,
-}
+const accounts = process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [];
 
 const config: HardhatUserConfig = {
-  abiExporter: {
-    path: "./abi",
-    clear: false,
-    flat: true,
-    // only: [],
-    // except: []
-  },
   defaultNetwork: "localhost",
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY || process.env.BSCSCAN_API_KEY,
-  },
-  gasReporter: {
-    coinmarketcap: process.env.COINMARKETCAP_API_KEY,
-    currency: "USD",
-    enabled: process.env.REPORT_GAS === "true",
-    excludeContracts: ["contracts/mocks/", "contracts/libraries/"],
-  },
-  mocha: {
-    timeout: 20000,
   },
   namedAccounts: {
     deployer: {
@@ -115,8 +94,8 @@ const config: HardhatUserConfig = {
       tags: ["staging"],
       gasMultiplier: 2,
     },
-    "selendra-testnet": {
-      url: "https://apiselendra-testnet.koompi.org/",
+    "indra-test": {
+      url: "https://indranet-rpc.selendra.org/",
       accounts,
       chainId: 222,
       live: true,
@@ -125,7 +104,6 @@ const config: HardhatUserConfig = {
   },
   paths: {
     artifacts: "artifacts",
-    cache: "cache",
     deploy: "deploy",
     deployments: "deployments",
     imports: "imports",
@@ -135,7 +113,7 @@ const config: HardhatUserConfig = {
   solidity: {
     compilers: [
       {
-        version: "0.4.18",
+        version: "0.8.2",
         settings: {
           optimizer: {
             enabled: true,
@@ -149,10 +127,6 @@ const config: HardhatUserConfig = {
     alphaSort: true,
     runOnCompile: true,
     disambiguatePaths: false,
-  },
-  spdxLicenseIdentifier: {
-    overwrite: false,
-    runOnCompile: true,
   },
   typechain: {
     outDir: "types",
